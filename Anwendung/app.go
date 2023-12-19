@@ -12,11 +12,10 @@ import (
 type App struct {
 	router http.Handler
 	DB     *mongo.Database
-	
 }
 
 func New() (*App, error) {
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27018")
+	clientOptions := options.Client().ApplyURI("mongodb://mein-mongodb:27017")
 	client, err := mongo.Connect(context.Background(), clientOptions)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to MongoDB: %w", err)
@@ -36,9 +35,6 @@ func New() (*App, error) {
 	}
 	return app, nil
 }
-
-
-
 
 func (p *App) Start(ctx context.Context) error {
 	server := &http.Server{

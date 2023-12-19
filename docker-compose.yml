@@ -4,7 +4,18 @@ services:
     image: mongo:latest
     container_name: mein-docker
     ports:
-      - "27018:27017"
+      - "27017:27017"
+    networks:
+      - meine-netzwerk
+
+  microservice1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mein-mongodb
     networks:
       - meine-netzwerk
 
