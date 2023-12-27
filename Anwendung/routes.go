@@ -28,4 +28,5 @@ func loadProductRoutes(router chi.Router, productHandler *Product) {
 	router.Get("/{id}", productHandler.GetByID)
 	router.Put("/{id}", productHandler.UpdateByID)
 	router.Delete("/{id}", productHandler.DeleteByID)
+	router.Patch("/{id}/aktualisiereBestand", productHandler.AktualisiereBestandByID)
 }

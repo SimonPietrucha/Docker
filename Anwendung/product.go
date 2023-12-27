@@ -6,6 +6,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+
 	"github.com/go-chi/chi/v5"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -13,7 +14,7 @@ import (
 )
 
 type Product struct {
-	Collection *mongo.Collection  // Füge die Collection hinzu
+	Collection *mongo.Collection // Füge die Collection hinzu
 }
 
 type ProductModel struct {
@@ -116,3 +117,38 @@ func (p *Product) DeleteByID(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 }
+
+// ...
+
+func (p *Product) AktualisiereBestandByID(w http.ResponseWriter, r *http.Request) {
+	productID := chi.URLParam(r, "id")
+	objID, err := primitive.ObjectIDFromHex(productID)
+	if err != nil {
+		http.Error(w, "Ungültige Produkt ID", http.StatusBadRequest)
+		return
+	}
+
+	var kaufanfrage struct {
+		Menge int `json:"menge,omitempty" bson:"menge,omitempty"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&kaufanfrage); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// Hier sollte die Logik für den Produktkauf implementiert werden
+	_, err = p.Collection.UpdateOne(
+		context.TODO(),
+		bson.M{"_id": objID},
+		bson.M{"$inc": bson.M{"quantity": -kaufanfrage.Menge}},
+	)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
+
+// ...
