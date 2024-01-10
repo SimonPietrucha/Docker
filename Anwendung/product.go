@@ -1,5 +1,3 @@
-// product.go
-
 package Anwendung
 
 import (
@@ -14,7 +12,7 @@ import (
 )
 
 type Product struct {
-	Collection *mongo.Collection // Füge die Collection hinzu
+	Collection *mongo.Collection
 }
 
 type ProductModel struct {

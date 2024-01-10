@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
-	"time" 
-	
+	"time"
+
 	"github.com/SimonPietrucha/Docker/Anwendung"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
@@ -12,7 +12,6 @@ import (
 func main() {
 	app, err := Anwendung.New()
 	if err != nil {
-		// Behandle den Fehler
 		fmt.Println("Failed to create app:", err)
 		return
 	}
